@@ -4,6 +4,7 @@ package com.jontromanob.app.retrofit_rxjava.retrofit;
  * Created by Joy on 11/19/2016.
  */
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -40,10 +41,10 @@ public class ApiClient {
 
 // add logging as last interceptor
 
-           /* httpClient.addInterceptor(logging)
-                    .addNetworkInterceptor(new StethoInterceptor());  // <-
+          httpClient.addInterceptor(logging)
+                    .addNetworkInterceptor(new StethoInterceptor ());  // <-
 
-            httpClient.
+            /*  httpClient.
                     addInterceptor(new Interceptor() {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
