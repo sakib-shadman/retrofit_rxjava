@@ -16,6 +16,7 @@ import com.jontromanob.app.retrofit_rxjava.retrofit.visitapplication.model.Visit
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Single;
@@ -119,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
         Single<Response<List<VisitApplicationDetails>>> testObservable = ApiClient.getClient ().create (VisitApplicationInterface.class).getAllVisitApplicationList (auth);
 
-        testObservable.subscribeOn (Schedulers.io ()).observeOn (AndroidSchedulers.mainThread ()).subscribe (new SingleObserver<Response<List<VisitApplicationDetails>>> () {
+        testObservable.subscribeOn (Schedulers.io ()).observeOn (AndroidSchedulers.mainThread ())
+                .subscribe (new SingleObserver<Response<List<VisitApplicationDetails>>> () {
             @Override
             public void onSubscribe(Disposable d) {
 
