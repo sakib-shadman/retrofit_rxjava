@@ -1,11 +1,12 @@
 package com.jontromanob.app.retrofit_rxjava.retrofit;
 
-import com.jontromanob.app.retrofit_rxjava.retrofit.login.LoginApiInterface;
+import com.jontromanob.app.retrofit_rxjava.retrofit.leaveapplication.model.LeaveApplicationDetails;
 import com.jontromanob.app.retrofit_rxjava.retrofit.login.model.LogInResponse;
 import com.jontromanob.app.retrofit_rxjava.retrofit.visitapplication.model.VisitApplicationDetails;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Response;
 import retrofit2.http.Field;
@@ -32,9 +33,20 @@ public interface ServiceRepository {
     );
 
 
-
     @GET("api/VisitApi/GetAll")
     Single<Response<List<VisitApplicationDetails>>> getAllVisitApplicationList(
+
+            @Header("Authorization") String authorization
+    );
+
+
+    @GET("api/LeaveApi/GetAll")
+    Observable<List<LeaveApplicationDetails>> getAllLeaveApplicationList(
+            @Header("Authorization") String authorization
+    );
+
+    @GET("api/VisitApi/GetAll")
+    Observable<List<VisitApplicationDetails>> getAllVisitApplicationListObservable(
 
             @Header("Authorization") String authorization
     );

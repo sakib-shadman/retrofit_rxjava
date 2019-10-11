@@ -1,11 +1,13 @@
 package com.jontromanob.app.retrofit_rxjava;
 
 import com.jontromanob.app.retrofit_rxjava.retrofit.ServiceRepository;
+import com.jontromanob.app.retrofit_rxjava.retrofit.leaveapplication.model.LeaveApplicationDetails;
 import com.jontromanob.app.retrofit_rxjava.retrofit.login.model.LogInResponse;
 import com.jontromanob.app.retrofit_rxjava.retrofit.visitapplication.model.VisitApplicationDetails;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Response;
 
@@ -27,5 +29,13 @@ public class RepoRepository {
 
     public Single<LogInResponse> getLoginInfo(String userName, String password,String grantType,Integer companyId) {
         return serviceRepository.postLoginInfo (userName,password,grantType,companyId,null,null,null);
+    }
+
+    public Observable<List<LeaveApplicationDetails>> getLeaveApplication(String authorization){
+        return serviceRepository.getAllLeaveApplicationList (authorization);
+    }
+
+    public Observable<List<VisitApplicationDetails>> getVisitApplicationObservable(String authorization){
+        return serviceRepository.getAllVisitApplicationListObservable (authorization);
     }
 }

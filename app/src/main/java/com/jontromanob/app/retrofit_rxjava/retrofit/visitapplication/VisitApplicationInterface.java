@@ -20,16 +20,15 @@ import retrofit2.http.Headers;
 public interface VisitApplicationInterface {
 
 
-    /*@Headers({
+    @Headers({
             "Content-Type: application/json"
     })
 
     @GET("api/VisitApi/GetAll")
 
-    Single<List<VisitApplicationDetails>> getAllVisitApplicationList(
+    Single<List<VisitApplicationDetails>> getAllVisitApplicationListSingle(
             @Header("Authorization") String authorization
     );
-*/
 
 
     @GET("api/VisitApi/GetAll")
