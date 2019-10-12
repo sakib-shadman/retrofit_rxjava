@@ -11,12 +11,15 @@ import com.jontromanob.app.retrofit_rxjava.roomdb.User;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+
 
 @Dao
 public interface UserModelDao {
 
     @Query("select * from user")
-    List<User> getAllUser();
+    Flowable<List<User>> getAllUser();
 
     @Insert
     void addUser(User user);

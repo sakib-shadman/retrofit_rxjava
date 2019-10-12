@@ -20,6 +20,12 @@ public class User {
     @ColumnInfo(name = "user_address")
     private String userAddress;
 
+    public User(String userName, Integer userAge, String userAddress) {
+        this.userName = userName;
+        this.userAge = userAge;
+        this.userAddress = userAddress;
+    }
+
     public Integer getId() {
         return id;
     }

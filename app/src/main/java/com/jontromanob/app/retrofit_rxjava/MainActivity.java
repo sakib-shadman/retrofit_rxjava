@@ -13,10 +13,13 @@ import com.jontromanob.app.retrofit_rxjava.retrofit.leaveapplication.model.Leave
 import com.jontromanob.app.retrofit_rxjava.retrofit.login.model.LogInResponse;
 import com.jontromanob.app.retrofit_rxjava.retrofit.visitapplication.VisitApplicationInterface;
 import com.jontromanob.app.retrofit_rxjava.retrofit.visitapplication.model.VisitApplicationDetails;
+import com.jontromanob.app.retrofit_rxjava.roomdb.AppDatabase;
+import com.jontromanob.app.retrofit_rxjava.roomdb.User;
 
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Single;
@@ -24,7 +27,9 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -48,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 getLoginData ();
+            }
+        });
+
+        Button databaseButton = (Button) findViewById(R.id.databaseButton);
+        databaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertToDb();
             }
         });
     }
@@ -113,8 +126,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /////******* Visit api call is implemented using single response observer ******/////////
 
+
+    /////******* Visit api call is implemented using single response observer ******/////////
     private void getVisitDataUsingSingleResponseObserver() {
 
 
@@ -145,8 +159,10 @@ public class MainActivity extends AppCompatActivity {
     /////******* Visit api call is implemented using single response observer ******/////////
 
 
-    /////******* Visit api call is implemented using single observer ******/////////
 
+
+
+    /////******* Visit api call is implemented using single observer ******/////////
     private void getVisitDataUsingSingleObserver() {
 
 
@@ -171,12 +187,12 @@ public class MainActivity extends AppCompatActivity {
                 });
 
     }
-
     /////******* Visit api call is implemented using single observer ******/////////
 
 
-    /////******* Visit api call is implemented using composite disposable ******/////////
 
+
+    /////******* Visit api call is implemented using composite disposable ******/////////
     private void getVisitDataUsingCompositeDisposable() {
 
 
@@ -200,8 +216,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
     /////******* Visit api call is implemented using composite disposable ******/////////
+
+
+
+
 
 
 
@@ -256,8 +275,55 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
     ////****** Combine multiple request using zip ********//////////
+
+
+    ////***** Insert data to room database *****/////
+    private void insertToDb(){
+
+        final AppDatabase appDatabase = AppDatabase.getDatabase(this);
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                appDatabase.userModelDao().addUser(new User("a",2,"abc"));
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                        fetchUser();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+    ////***** Insert data to room database *****/////
+
+
+
+    ////***** Fetch data to room database *****/////
+    private void fetchUser(){
+        final AppDatabase appDatabase = AppDatabase.getDatabase(this);
+        appDatabase.userModelDao().getAllUser().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<User>>() {
+                    @Override
+                    public void accept(List<User> users) throws Exception {
+
+                        Toast.makeText(MainActivity.this, ""+users.size(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+
 
     @Override
     protected void onDestroy() {
